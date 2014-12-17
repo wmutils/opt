@@ -1,0 +1,72 @@
+.Dd December 17, 2014
+.Dt WEW 1
+.Os wmutils
+.Sh NAME
+.Nm wew
+.Nd window event watcher
+.Sh SYNOPSIS
+.Nm wew
+.Op Fl al
+.Op Fl m Ar mask
+.Sh DESCRIPTION
+.Nm
+is a daemon that prints X events to stdout in the form :
+.Ar ev:wid .
+See section EVENT VALUES for the values of
+.Ar ev .
+.Pp
+.Nm
+will always register the XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY on the root window.
+.Bl -tag -width Ds
+.It Fl a
+Register all events
+.It Fl l
+List event mask values
+.It Fl m Ar mask
+Set event mask to
+.Ar mask
+.El
+.Sh EVENT VALUES
+Each event returned by the X server has a specific value:
+
+.Bl -tag -compact -offset 4n
+.It Dv XCB_KEY_PRESS .......... 2
+.It Dv XCB_KEY_RELEASE ........ 3
+.It Dv XCB_BUTTON_PRESS ....... 4
+.It Dv XCB_BUTTON_RELEASE ..... 5
+.It Dv XCB_MOTION_NOTIFY ...... 6
+.It Dv XCB_ENTER_NOTIFY ....... 7
+.It Dv XCB_LEAVE_NOTIFY ....... 8
+.It Dv XCB_FOCUS_IN ........... 9
+.It Dv XCB_FOCUS_OUT .......... 10
+.It Dv XCB_KEYMAP_NOTIFY ...... 11
+.It Dv XCB_EXPOSE ............. 12
+.It Dv XCB_GRAPHICS_EXPOSURE .. 13
+.It Dv XCB_NO_EXPOSURE ........ 14
+.It Dv XCB_VISIBILITY_NOTIFY .. 15
+.It Dv XCB_CREATE_NOTIFY ...... 16
+.It Dv XCB_DESTROY_NOTIFY ..... 17
+.It Dv XCB_UNMAP_NOTIFY ....... 18
+.It Dv XCB_MAP_NOTIFY ......... 19
+.It Dv XCB_MAP_REQUEST ........ 20
+.It Dv XCB_REPARENT_NOTIFY .... 21
+.It Dv XCB_CONFIGURE_NOTIFY ... 22
+.It Dv XCB_CONFIGURE_REQUEST .. 23
+.It Dv XCB_GRAVITY_NOTIFY ..... 24
+.It Dv XCB_RESIZE_REQUEST ..... 25
+.It Dv XCB_CIRCULATE_NOTIFY ... 26
+.It Dv XCB_CIRCULATE_REQUEST .. 27
+.It Dv XCB_PROPERTY_NOTIFY .... 28
+.It Dv XCB_SELECTION_CLEAR .... 29
+.It Dv XCB_SELECTION_REQUEST .. 30
+.It Dv XCB_SELECTION_NOTIFY ... 31
+.It Dv XCB_COLORMAP_NOTIFY .... 32
+.It Dv XCB_CLIENT_MESSAGE ..... 33
+.It Dv XCB_MAPPING_NOTIFY ..... 34
+.It Dv XCB_GE_GENERIC ......... 35
+.El
+.Sh ENVIRONMENT
+.Nm
+acts on the X display specified by the
+.Ev DISPLAY
+variable.
