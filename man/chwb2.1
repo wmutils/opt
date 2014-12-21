@@ -1,0 +1,45 @@
+.Dd December 13, 2014
+.Dt CHWB2 1
+.Os wmutils
+.Sh NAME
+.Nm chwb2
+.Nd change window double-borders
+.Sh SYNOPSIS
+.Nm chwb2
+.Op Fl I Ar inner color
+.Op Fl O Ar outer color
+.Op Fl i Ar inner size
+.Op Fl o Ar outer size
+.Ar wid Op Ar ...
+.Sh DESCRIPTION
+.Nm
+applies a double pixmap border to
+.Ar wid .
+.Bl -tag -width Ds
+.It Fl I Ar inner color
+.It Fl O Ar outer color
+Set the inner/outer border color of
+.Ar wid
+to
+.Ar color .
+Colors should be passed as a hex triplet without the '#' prefix (see
+.Xr strtoul 3 )
+in RGB format.
+.It Fl i Ar size
+.It Fl o Ar size
+Sets the inner/outer border width of
+.Ar wid
+to
+.Ar size .
+.El
+.Sh ENVIRONMENT
+.Nm
+acts on the X display specified by the
+.Ev DISPLAY
+variable.
+.Sh EXAMPLES
+Set the inner border of the current window to yellow with a black outer rim:
+.Dl $ chwb2 -O 000000 -I ffff00 -i 3 -o 1 $(pfw)
+.Sh SEE ALSO
+.Xr chwb 1
+.Xr strtoul 3
