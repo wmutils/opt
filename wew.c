@@ -9,7 +9,33 @@
 
 static xcb_connection_t *conn;
 static xcb_screen_t *scr;
-static uint32_t mask = 0;
+static uint32_t mask = XCB_EVENT_MASK_NO_EVENT
+                     | XCB_EVENT_MASK_KEY_PRESS
+                     | XCB_EVENT_MASK_KEY_RELEASE
+                     | XCB_EVENT_MASK_BUTTON_PRESS
+                     | XCB_EVENT_MASK_BUTTON_RELEASE
+                     | XCB_EVENT_MASK_ENTER_WINDOW
+                     /* | XCB_EVENT_MASK_LEAVE_WINDOW */
+                     /* | XCB_EVENT_MASK_POINTER_MOTION */
+                     /* | XCB_EVENT_MASK_POINTER_MOTION_HINT */
+                     /* | XCB_EVENT_MASK_BUTTON_1_MOTION */
+                     /* | XCB_EVENT_MASK_BUTTON_2_MOTION */
+                     /* | XCB_EVENT_MASK_BUTTON_3_MOTION */
+                     /* | XCB_EVENT_MASK_BUTTON_4_MOTION */
+                     /* | XCB_EVENT_MASK_BUTTON_5_MOTION */
+                     /* | XCB_EVENT_MASK_BUTTON_MOTION */
+                     /* | XCB_EVENT_MASK_KEYMAP_STATE */
+                     /* | XCB_EVENT_MASK_EXPOSURE */
+                     /* | XCB_EVENT_MASK_VISIBILITY_CHANGE */
+                     /* | XCB_EVENT_MASK_STRUCTURE_NOTIFY */
+                     /* | XCB_EVENT_MASK_RESIZE_REDIRECT */
+                     /* | XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY */
+                     /* | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT */
+                     /* | XCB_EVENT_MASK_FOCUS_CHANGE */
+                     /* | XCB_EVENT_MASK_PROPERTY_CHANGE */
+                     /* | XCB_EVENT_MASK_COLOR_MAP_CHANGE */
+                     /* | XCB_EVENT_MASK_OWNER_GRAB_BUTTON */
+                     ;
 
 void usage(char*);
 void list_events(void);
@@ -109,11 +135,14 @@ get_window_id(xcb_generic_event_t *e)
 			wid = ((xcb_map_notify_event_t*)e)->window;
 			break;
 
+		case XCB_BUTTON_PRESS:
+		case XCB_BUTTON_RELEASE:
+			wid = ((xcb_button_press_event_t*)e)->child;
+			break;
+
 		/* please... handle me ... ;_;
 		case XCB_KEY_PRESS:
 		case XCB_KEY_RELEASE:
-		case XCB_BUTTON_PRESS:
-		case XCB_BUTTON_RELEASE:
 		case XCB_MOTION_NOTIFY:
 		case XCB_KEYMAP_NOTIFY:
 		case XCB_EXPOSE:
@@ -157,6 +186,10 @@ handle_events(void)
 	 */
 	register_events(scr->root, XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY);
 
+	xcb_grab_button(conn, 0, scr->root, XCB_EVENT_MASK_BUTTON_PRESS | 
+	                XCB_EVENT_MASK_BUTTON_RELEASE, XCB_GRAB_MODE_ASYNC,
+	                XCB_GRAB_MODE_ASYNC, scr->root, XCB_NONE, 1, XCB_NONE);
+
 	/* register the events on all mapped windows */
 	wn = get_windows(conn, scr->root, &wc);
 	for (i=0; i<wn; i++)
@@ -196,35 +229,6 @@ main (int argc, char **argv)
 		case 'm':
 			  mask = strtoul(EARGF(usage(argv0)), NULL, 10);
 			  break;
-		case 'a':
-			mask = XCB_EVENT_MASK_NO_EVENT
-			       | XCB_EVENT_MASK_KEY_PRESS
-			       | XCB_EVENT_MASK_KEY_RELEASE
-			       | XCB_EVENT_MASK_BUTTON_PRESS
-			       | XCB_EVENT_MASK_BUTTON_RELEASE
-			       | XCB_EVENT_MASK_ENTER_WINDOW
-			       | XCB_EVENT_MASK_LEAVE_WINDOW
-			       /* | XCB_EVENT_MASK_POINTER_MOTION */
-			       /* | XCB_EVENT_MASK_POINTER_MOTION_HINT */
-			       /* | XCB_EVENT_MASK_BUTTON_1_MOTION */
-			       /* | XCB_EVENT_MASK_BUTTON_2_MOTION */
-			       /* | XCB_EVENT_MASK_BUTTON_3_MOTION */
-			       /* | XCB_EVENT_MASK_BUTTON_4_MOTION */
-			       /* | XCB_EVENT_MASK_BUTTON_5_MOTION */
-			       /* | XCB_EVENT_MASK_BUTTON_MOTION */
-			       /* | XCB_EVENT_MASK_KEYMAP_STATE */
-			       /* | XCB_EVENT_MASK_EXPOSURE */
-			       /* | XCB_EVENT_MASK_VISIBILITY_CHANGE */
-			       | XCB_EVENT_MASK_STRUCTURE_NOTIFY
-			       /* | XCB_EVENT_MASK_RESIZE_REDIRECT */
-			       /* | XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY */
-			       /* | XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT */
-			       /* | XCB_EVENT_MASK_FOCUS_CHANGE */
-			       /* | XCB_EVENT_MASK_PROPERTY_CHANGE */
-			       /* | XCB_EVENT_MASK_COLOR_MAP_CHANGE */
-			       /* | XCB_EVENT_MASK_OWNER_GRAB_BUTTON */
-			       ;
-			break;
 		default: usage(argv0);
 	} ARGEND;
 
