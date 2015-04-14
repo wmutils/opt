@@ -186,6 +186,10 @@ handle_events(void)
 	 */
 	register_events(scr->root, XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY);
 
+	xcb_grab_button(conn, 0, scr->root, XCB_EVENT_MASK_BUTTON_PRESS | 
+			XCB_EVENT_MASK_BUTTON_RELEASE, XCB_GRAB_MODE_ASYNC,
+			XCB_GRAB_MODE_ASYNC, scr->root, XCB_NONE, 1, XCB_NONE);
+
 	/* register the events on all mapped windows */
 	wn = get_windows(conn, scr->root, &wc);
 	for (i=0; i<wn; i++)
