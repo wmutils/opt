@@ -18,13 +18,12 @@ See section EVENT VALUES for the values of
 .Nm
 will always register the XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY on the root window.
 .Bl -tag -width Ds
-.It Fl a
-Register all events
 .It Fl l
 List event mask values
 .It Fl m Ar mask
 Set event mask to
 .Ar mask
+(defaults to XCB_EVENT_MASK_ENTER_NOTIFY)
 .El
 .Sh EVENT VALUES
 Each event returned by the X server has a specific value:
