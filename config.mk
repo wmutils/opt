@@ -6,4 +6,3 @@ LD = $(CC)
 
 CFLAGS += -std=c99 -pedantic -Wall -Os
 LDFLAGS += -lxcb
-

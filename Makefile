@@ -4,6 +4,7 @@ HDR = arg.h util.h
 SRC =           \
 	wew.c   \
 	chwb2.c \
+	wname.c \
 	xmmv.c
 
 OBJ = $(SRC:.c=.o)
