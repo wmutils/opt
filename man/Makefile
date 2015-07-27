@@ -2,8 +2,7 @@ include ../config.mk
 
 MAN =           \
 	wew.1   \
-	chwb2.1 \
-	xmmv.1
+	chwb2.1
 
 .POSIX:
 
