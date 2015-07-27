@@ -3,7 +3,8 @@ include config.mk
 HDR = arg.h util.h
 SRC =           \
 	wew.c   \
-	chwb2.c
+	chwb2.c \
+	wname.c
 
 OBJ = $(SRC:.c=.o)
 BIN = $(SRC:.c=)
