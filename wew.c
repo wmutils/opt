@@ -140,10 +140,23 @@ get_window_id(xcb_generic_event_t *e)
 			wid = ((xcb_button_press_event_t*)e)->child;
 			break;
 
+		/*
+		 * MOTION_NOTIFY. Be careful with this one...
+		 *         It triggers ALOT! 
+		 *
+		 *          |\.---./|_
+	 	 *         (o)   (°) ''--._
+	 	 *         / .A--.         '\
+	 	 *         |'     `.         \
+	 	 *         /                 \
+		 *        /_;`|__\------(__/-\
+		 */
+		case XCB_MOTION_NOTIFY:
+			wid = ((xcb_motion_notify_event_t*)e)->event;
+			break;
 		/* please... handle me ... ;_;
 		case XCB_KEY_PRESS:
 		case XCB_KEY_RELEASE:
-		case XCB_MOTION_NOTIFY:
 		case XCB_KEYMAP_NOTIFY:
 		case XCB_EXPOSE:
 		case XCB_GRAPHICS_EXPOSURE:
