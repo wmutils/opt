@@ -99,7 +99,7 @@ motherfuckingenterevent(xcb_generic_event_t *e)
 	xcb_enter_notify_event_t *ee;
 
 	ee = (xcb_enter_notify_event_t*)e;
-	if (ee->detail == 0 && 
+	if (ee->detail != XCB_NOTIFY_DETAIL_INFERIOR &&
 			(ee->mode == XCB_NOTIFY_MODE_NORMAL ||
 			 ee->mode == XCB_NOTIFY_MODE_UNGRAB))
 		return 1;
