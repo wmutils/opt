@@ -19,8 +19,9 @@ get_providers(xcb_connection_t* conn, xcb_screen_t* scrn, xcb_randr_provider_t *
     return xcb_randr_get_providers_providers_length(pr);
 }
 
-xcb_randr_output_t*
-get_outputs(xcb_connection_t* conn, xcb_randr_provider_t provider, int *length)
+
+int 
+get_outputs(xcb_connection_t* conn, xcb_randr_provider_t provider, xcb_randr_output_t** os)
 {
     xcb_randr_get_provider_info_cookie_t pic;
     pic = xcb_randr_get_provider_info(conn, provider, 0);
@@ -29,9 +30,35 @@ get_outputs(xcb_connection_t* conn, xcb_randr_provider_t provider, int *length)
     // TODO: Error check the following line.
     pir = xcb_randr_get_provider_info_reply(conn, pic, NULL);
     
-    xcb_randr_output_t *o = xcb_randr_get_provider_info_outputs(pir);
-    *(length) = xcb_randr_get_provider_info_outputs_length(pir);
-    return o;
+    *os = xcb_randr_get_provider_info_outputs(pir);
+    return xcb_randr_get_provider_info_outputs_length(pir);
 }
 
+
+
+xcb_randr_get_output_info_reply_t *
+get_output_info(xcb_connection_t* conn, xcb_randr_output_t output){
+    xcb_randr_get_output_info_cookie_t oic;
+
+    // TODO: Figure out the use of the timestamp below.
+    oic = xcb_randr_get_output_info(conn, output, 0);
+    xcb_randr_get_output_info_reply_t *output_info_reply;
+   
+    // TODO: Error check the following line.
+    output_info_reply = xcb_randr_get_output_info_reply(conn, oic, NULL);
+
+    return output_info_reply;
+}
+
+uint8_t* get_output_name(xcb_connection_t* conn, xcb_randr_output_t output){
+    xcb_randr_get_output_info_reply_t* r;
+    r = get_output_info(conn, output);
+    return xcb_randr_get_output_info_name(r);
+}
+
+int get_output_connection(xcb_connection_t* conn, xcb_randr_output_t output){
+    xcb_randr_get_output_info_reply_t* r;
+    r = get_output_info(conn, output);
+    return r->connection;
+}
 
