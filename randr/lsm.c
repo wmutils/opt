@@ -12,6 +12,7 @@ static void
 usage(char *name)
 {
     printf("usage: %s \n", name);
+    exit(0);
 }
 
 void 
