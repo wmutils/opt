@@ -230,6 +230,8 @@ handle_events(void)
 			printf("%d:0x%08x\n", e->response_type, wid);
 			fflush(stdout);
 		}
+
+		free(e);
 	}
 }
 
