@@ -1,10 +1,11 @@
 include config.mk
 
 HDR = arg.h util.h
-SRC =           \
+SRC = \
 	wew.c   \
 	chwb2.c \
-	wname.c
+	wname.c \
+	xmmv.c
 
 OBJ = $(SRC:.c=.o)
 BIN = $(SRC:.c=)
