@@ -5,7 +5,8 @@ SRC =           \
 	wew.c   \
 	chwb2.c \
 	wname.c \
-	xmmv.c
+	xmmv.c  \
+	xmrs.c
 
 OBJ = $(SRC:.c=.o)
 BIN = $(SRC:.c=)
