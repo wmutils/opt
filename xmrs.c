@@ -100,18 +100,13 @@ mresize(xcb_window_t win)
 		/* CHANGE */
 		values[0] = abs(ptr->root_x - geom->x);
 		values[1] = abs(ptr->root_y - geom->y);
-/*
-		values[0] = (ptr->root_x + geom->width / 2 > scr->width_in_pixels - (geom->border_width*2))
-				? (scr->width_in_pixels - geom->width - (geom->border_width*2))
-				: ptr->root_x - geom->width / 2;
-		values[1] = (ptr->root_y + geom->height / 2 > scr->width_in_pixels - (geom->border_width*2))
-				? (scr->height_in_pixels - geom->height - (geom->border_width*2))
-				: ptr->root_y - geom->height / 2;
-		if (ptr->root_x < geom->width/2)
-			values[0] = 0;
-		if (ptr->root_y < geom->height/2)
-			values[1] = 0;
-*/
+
+		values[0] = (abs(ptr->root_x - geom->x) > scr->width_in_pixels - (geom->border_width*2))
+				? (scr->width_in_pixels - (geom->border_width*2))
+				: abs(ptr->root_x - geom->x);
+		values[1] = (abs(ptr->root_y - geom->y) > scr->height_in_pixels - (geom->border_width*2))
+				? (scr->height_in_pixels - (geom->border_width*2))
+				: abs(ptr->root_y - geom->y);
 
 		xcb_configure_window(conn, win, XCB_CONFIG_WINDOW_WIDTH
 						| XCB_CONFIG_WINDOW_HEIGHT, values);
