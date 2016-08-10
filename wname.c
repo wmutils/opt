@@ -42,7 +42,6 @@ get_title(xcb_window_t win)
 	}
 
 	warnx("could not get window title");
-	free(r);
 	return 1;
 }
 
