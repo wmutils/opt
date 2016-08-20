@@ -5,7 +5,7 @@ SRC =           \
 	wew.c   \
 	chwb2.c \
 	wname.c \
-	xmmv.c \
+	xmmv.c	\
 	watom.c
 
 OBJ = $(SRC:.c=.o)
