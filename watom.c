@@ -28,7 +28,7 @@ static xcb_atom_t xcb_atom_get(xcb_connection_t *conn, char *name)
 }
 
 static int
-get_title(xcb_window_t win, char *prop, char *type)
+get_watom(xcb_window_t win, char *prop, char *type)
 {
   int len = 0;
   xcb_get_property_cookie_t cookie;
