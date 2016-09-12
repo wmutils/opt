@@ -107,6 +107,22 @@ motherfuckingenterevent(xcb_generic_event_t *e)
 	return 0;
 }
 
+int
+motherfuckingfocusevent(xcb_generic_event_t *e)
+{
+	xcb_focus_in_event_t *ee;
+
+	ee = (xcb_focus_in_event_t*)e;
+	if (ee->detail != XCB_NOTIFY_DETAIL_VIRTUAL &&
+		ee->detail != XCB_NOTIFY_DETAIL_NONLINEAR_VIRTUAL &&
+		ee->detail != XCB_NOTIFY_DETAIL_POINTER &&
+		(ee->mode == XCB_NOTIFY_MODE_NORMAL ||
+		 ee->mode == XCB_NOTIFY_MODE_WHILE_GRABBED))
+		return 1;
+
+	return 0;
+}
+
 xcb_window_t
 get_window_id(xcb_generic_event_t *e)
 {
@@ -122,7 +138,8 @@ get_window_id(xcb_generic_event_t *e)
 
 		case XCB_FOCUS_IN:
 		case XCB_FOCUS_OUT:
-			wid = ((xcb_focus_in_event_t*)e)->event;
+			if (motherfuckingfocusevent(e))
+				wid = ((xcb_focus_in_event_t*)e)->event;
 			break;
 
 		case XCB_CREATE_NOTIFY:
