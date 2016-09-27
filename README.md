@@ -1,8 +1,11 @@
-wmutlils' opt
+wmutils' opt
 =============
 
-This project is for programs meant to accompany
-[wmutils' core](https://github.com/wmutils/core).
+opt is at set of optional utilities meant to accompany
+[core](https://github.com/wmutils/core).
+
+Just as the core programs, each utility does one job
+and does it well, like dealing with window events or names.
 
 utilities
 ---------
