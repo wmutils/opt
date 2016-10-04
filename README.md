@@ -27,7 +27,7 @@ Like core, opt depends only on the XCB library.
 license
 -------
 
-This project and all it's code is licensed under the [ISC](http://www.openbsd.org/policy.html)
+This project and all its code is licensed under the [ISC](http://www.openbsd.org/policy.html)
 license. See the LICENSE file.
 
 build & install
