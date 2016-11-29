@@ -47,7 +47,7 @@ int motherfuckingenterevent(xcb_generic_event_t*);
 void
 usage(char *name)
 {
-	fprintf(stderr, "usage: %s [-al] [-m <mask>]\n", name);
+	fprintf(stderr, "usage: %s [-l] [-m <mask>]\n", name);
 	exit(1);
 }
 
