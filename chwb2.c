@@ -15,6 +15,7 @@
 **/
 
 #include <xcb/xcb.h>
+#include <xcb/xcb_aux.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <err.h>
@@ -137,7 +138,7 @@ main (int argc, char **argv)
 	while (*argv)
 		set2border(strtoul(*argv++, NULL, 16), oc, os, ic, is);
 
-	xcb_flush(conn);
+	xcb_aux_sync(conn);
 
 	kill_xcb(&conn);
 

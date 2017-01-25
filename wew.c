@@ -3,6 +3,7 @@
 #include <err.h>
 #include <getopt.h>
 #include <xcb/xcb.h>
+#include <xcb/xcb_aux.h>
 
 #include "util.h"
 #include "arg.h"
@@ -90,7 +91,7 @@ register_events(xcb_window_t w, uint32_t m)
 	uint32_t val[] = { m };
 
 	xcb_change_window_attributes(conn, w, XCB_CW_EVENT_MASK, val);
-	xcb_flush(conn);
+	xcb_aux_sync(conn);
 }
 
 int
@@ -229,7 +230,7 @@ handle_events(void)
 	for (i=0; i<wn; i++)
 		register_events(wc[i], mask);
 
-	xcb_flush(conn);
+	xcb_aux_sync(conn);
 
 	for(;;) {
 		e = xcb_wait_for_event(conn);
