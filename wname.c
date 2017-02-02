@@ -49,15 +49,21 @@ get_title(xcb_window_t win)
 int
 main(int argc, char **argv)
 {
-	int i, r = 0;
+	int i, base, r = 0;
 
 	if (argc < 2)
 		usage(argv[0]);
 
 	init_xcb(&conn);
 
-	for (i=1; i < argc; i++)
-		r += get_title(strtoul(argv[i], NULL, 16));
+	for (i=1; i < argc; i++) {
+                if(!strncmp(argv[i], "0x", 2))
+                        base = 16;
+                else
+                        base = 10;
+
+		r += get_title(strtoul(argv[i], NULL, base));
+        }
 
 	kill_xcb(&conn);
 
