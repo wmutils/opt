@@ -16,6 +16,7 @@ opt has less utilities than core, here is a little overview:
 * wew   - print window events
 * wname - print a window's name
 * xmmv  - move a window with the mouse
+* xmrs  - resize a window with the mouse
 
 For more information, refer to the programs manpages.
 
