@@ -1,0 +1,43 @@
+.Dd February 3, 2017
+.Dt CHWBB 1
+.Os wmutils
+.Sh NAME
+.Nm chwbb
+.Nd change window bevel borders
+.Sh SYNOPSIS
+.Nm chwbb
+.Op Fl c Ar base color
+.Op Fl i Ar inner border size
+.Op Fl o Ar outer border size
+.Op Fl m Ar middle border size
+.Ar wid Op Ar ...
+.Sh DESCRIPTION
+.Nm
+applies a bevel pixmap border to
+.Ar wid .
+.Bl -tag -width Ds
+.It Fl c Ar base color
+Set the base color that will be multiplied for
+.Ar wid
+.
+Colors should be passed as a hex triplet without the '#' prefix (see
+.Xr strtoul 3 )
+in RGB format.
+.It Fl i Ar size
+.It Fl o Ar size
+.It Fl m Ar size
+Sets the inner/outer/middle border width of
+.Ar wid
+to
+.Ar size .
+.El
+.Sh ENVIRONMENT
+.Nm
+acts on the X display specified by the
+.Ev DISPLAY
+variable.
+.Sh EXAMPLES
+Set a bevel border based on 777777 with total width of 8 on the current window:
+.Dl $ chwbb -c 777777 -I ffff00 -i 2 -m 4 -o 2 $(pfw)
+.Sh SEE ALSO
+.Xr strtoul 3
