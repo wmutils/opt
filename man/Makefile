@@ -5,7 +5,8 @@ MAN =           \
 	chwb2.1 \
 	wname.1 \
 	xmmv.1  \
-	chwn.1
+	chwn.1  \
+	xmrs.1
 
 .POSIX:
 
