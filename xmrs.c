@@ -57,7 +57,7 @@ mresize(xcb_window_t win) {
 
 	geom = xcb_get_geometry_reply(conn, xcb_get_geometry(conn, win), NULL);
 	xcb_warp_pointer(conn, XCB_NONE, win, 0, 0, 0, 0,
-			geom->width/2, geom->height/2);
+			geom->width, geom->height);
 
 	if (!geom)
 		errx(1, "could not get window size");
