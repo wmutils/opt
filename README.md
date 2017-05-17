@@ -1,7 +1,7 @@
 wmutils' opt
 =============
 
-opt is at set of optional utilities meant to accompany
+opt is a set of optional utilities meant to accompany
 [core](https://github.com/wmutils/core).
 
 Just as the core programs, each utility does one job
