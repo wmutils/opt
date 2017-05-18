@@ -47,7 +47,7 @@ get_focuswin(void) {
 }
 
 static void
-mresize(xcb_window_t win) {
+mmove(xcb_window_t win) {
 	uint32_t values[3];
 	xcb_get_geometry_reply_t *geom;
 	xcb_query_pointer_reply_t *ptr;
