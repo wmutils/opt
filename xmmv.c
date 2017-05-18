@@ -144,7 +144,7 @@ main(int argc, char **argv)
 	else
 		win = get_focuswin();
 
-	mresize(win);
+	mmove(win);
 
 	return 0;
 }
