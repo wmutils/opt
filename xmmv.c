@@ -1,5 +1,6 @@
 /* See LICENSE file for copyright and license details. */
 #include <xcb/xcb.h>
+#include <xcb/xcb_aux.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <err.h>
@@ -73,7 +74,7 @@ mmove(xcb_window_t win) {
 			XCB_GRAB_MODE_ASYNC, XCB_GRAB_MODE_ASYNC,
 			scr->root, XCB_NONE, XCB_CURRENT_TIME);
 
-	xcb_flush(conn);
+	xcb_aux_sync(conn);
 
 
 	for (;;) {
@@ -121,7 +122,7 @@ mmove(xcb_window_t win) {
 
 		xcb_configure_window(conn, win, XCB_CONFIG_WINDOW_X
 				| XCB_CONFIG_WINDOW_Y, values);
-		xcb_flush(conn);
+		xcb_aux_sync(conn);
 	}
 
 	xcb_ungrab_pointer(conn, XCB_CURRENT_TIME);
