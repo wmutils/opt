@@ -4,6 +4,7 @@ HDR = arg.h util.h
 SRC =           \
 	wew.c   \
 	chwb2.c \
+	chwbb.c \
 	wname.c \
 	xmmv.c  \
 	xmrs.c  \
