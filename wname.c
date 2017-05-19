@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <xcb/xcb.h>
 #include <err.h>
 
@@ -27,7 +28,7 @@ get_title(xcb_window_t win)
 	xcb_get_property_reply_t *r;
 
 	cookie = xcb_get_property(conn, 0, win,
-			XCB_ATOM_WM_NAME, XCB_ATOM_STRING, 0L, 32L);
+			XCB_ATOM_WM_NAME, XCB_GET_PROPERTY_TYPE_ANY, 0L, 32L);
 	r = xcb_get_property_reply(conn, cookie, NULL);
 
 	if (r) {
@@ -48,15 +49,21 @@ get_title(xcb_window_t win)
 int
 main(int argc, char **argv)
 {
-	int i, r = 0;
+	int i, base, r = 0;
 
 	if (argc < 2)
 		usage(argv[0]);
 
 	init_xcb(&conn);
 
-	for (i=1; i < argc; i++)
-		r += get_title(strtoul(argv[i], NULL, 16));
+	for (i=1; i < argc; i++) {
+                if(!strncmp(argv[i], "0x", 2))
+                        base = 16;
+                else
+                        base = 10;
+
+		r += get_title(strtoul(argv[i], NULL, base));
+        }
 
 	kill_xcb(&conn);
 
