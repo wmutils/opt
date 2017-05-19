@@ -12,8 +12,8 @@ static xcb_screen_t *scr;
 static uint32_t mask = XCB_EVENT_MASK_NO_EVENT
                      /* | XCB_EVENT_MASK_KEY_PRESS */
                      /* | XCB_EVENT_MASK_KEY_RELEASE */
-                     /* | XCB_EVENT_MASK_BUTTON_PRESS */
-                     /* | XCB_EVENT_MASK_BUTTON_RELEASE */
+                     | XCB_EVENT_MASK_BUTTON_PRESS
+                     | XCB_EVENT_MASK_BUTTON_RELEASE
                      | XCB_EVENT_MASK_ENTER_WINDOW
                      /* | XCB_EVENT_MASK_LEAVE_WINDOW */
                      /* | XCB_EVENT_MASK_POINTER_MOTION */
@@ -154,6 +154,8 @@ get_window_id(xcb_generic_event_t *e)
 
 		case XCB_BUTTON_PRESS:
 		case XCB_BUTTON_RELEASE:
+			xcb_allow_events(conn, XCB_ALLOW_REPLAY_POINTER, XCB_CURRENT_TIME);
+			xcb_flush(conn);
 			wid = ((xcb_button_press_event_t*)e)->child;
 			break;
 
@@ -217,11 +219,12 @@ handle_events(void)
 	register_events(scr->root, XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY);
 
 	if (mask & XCB_EVENT_MASK_BUTTON_PRESS) {
-		xcb_grab_button(conn, 0, scr->root,
-		                XCB_EVENT_MASK_BUTTON_PRESS |
-		                XCB_EVENT_MASK_BUTTON_RELEASE,
-		                XCB_GRAB_MODE_ASYNC, XCB_GRAB_MODE_ASYNC,
-		                scr->root, XCB_NONE, 1, XCB_NONE);
+		xcb_grab_button(conn, 1, scr->root,
+				XCB_EVENT_MASK_BUTTON_PRESS |
+				XCB_EVENT_MASK_BUTTON_RELEASE,
+				XCB_GRAB_MODE_SYNC, XCB_GRAB_MODE_ASYNC,
+				scr->root, XCB_NONE, XCB_BUTTON_INDEX_1, XCB_NONE);
+
 	}
 
 	/* register the events on all mapped windows */
