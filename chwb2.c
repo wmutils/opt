@@ -75,11 +75,7 @@ int is; /* inner size  */
 	};
 
 	xcb_rectangle_t outer[] = {
-		{w + b - o, 0, o, h + b * 2},
-		{w + b,     0, o, h + b * 2},
-		{0, h + b - o, w + b * 2, o},
-		{0, h + b,     w + b * 2, o},
-		{1, 1, 1, 1}
+		{0, 0, w+(b*2), h+(b*2)}
 	};
 
 	xcb_pixmap_t pmap = xcb_generate_id(conn);
@@ -91,7 +87,7 @@ int is; /* inner size  */
 
 	values[0] = oc;
 	xcb_change_gc(conn, gc, XCB_GC_FOREGROUND, values);
-	xcb_poly_fill_rectangle(conn, pmap, gc, 5, outer);
+	xcb_poly_fill_rectangle(conn, pmap, gc, 1, outer);
 
 	values[0] = ic;
 	xcb_change_gc(conn, gc, XCB_GC_FOREGROUND, values);
