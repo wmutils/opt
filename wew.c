@@ -43,6 +43,7 @@ void handle_events(void);
 void register_events(xcb_window_t, uint32_t);
 xcb_window_t get_window_id(xcb_generic_event_t*);
 int motherfuckingenterevent(xcb_generic_event_t*);
+int motherfuckingfocusevent(xcb_generic_event_t*);
 
 void
 usage(char *name)
@@ -130,6 +131,19 @@ get_window_id(xcb_generic_event_t *e)
 
 	wid = 0x0;
 	switch (e->response_type & ~0x80) {
+
+		case XCB_KEY_PRESS:
+		case XCB_KEY_RELEASE:
+		case XCB_BUTTON_PRESS:
+		case XCB_BUTTON_RELEASE:
+			wid = ((xcb_button_press_event_t*)e)->child;
+			break;
+
+		/* Triggers a lot */
+		case XCB_MOTION_NOTIFY:
+			wid = ((xcb_motion_notify_event_t*)e)->event;
+			break;
+
 		case XCB_ENTER_NOTIFY:
 		case XCB_LEAVE_NOTIFY:
 			if (motherfuckingenterevent(e))
@@ -142,6 +156,14 @@ get_window_id(xcb_generic_event_t *e)
 				wid = ((xcb_focus_in_event_t*)e)->event;
 			break;
 
+		case XCB_EXPOSE:
+			wid = ((xcb_expose_event_t*)e)->window;
+			break;
+
+		case XCB_VISIBILITY_NOTIFY:
+			wid = ((xcb_visibility_notify_event_t*)e)->window;
+			break;
+
 		case XCB_CREATE_NOTIFY:
 		case XCB_DESTROY_NOTIFY:
 			wid = ((xcb_create_notify_event_t*)e)->window;
@@ -152,49 +174,52 @@ get_window_id(xcb_generic_event_t *e)
 			wid = ((xcb_map_notify_event_t*)e)->window;
 			break;
 
-		case XCB_BUTTON_PRESS:
-		case XCB_BUTTON_RELEASE:
-			wid = ((xcb_button_press_event_t*)e)->child;
+		case XCB_MAP_REQUEST:
+			wid = ((xcb_map_request_event_t*)e)->window;
 			break;
 
-		/*
-		 * MOTION_NOTIFY. Be careful with this one...
-		 *         It triggers ALOT! 
-		 *
-		 *          |\.---./|_
-	 	 *         (o)   (°) ''--._
-	 	 *         / .A--.         '\
-	 	 *         |'     `.         \
-	 	 *         /                 \
-		 *        /_;`|__\------(__/-\
-		 */
-		case XCB_MOTION_NOTIFY:
-			wid = ((xcb_motion_notify_event_t*)e)->event;
+		case XCB_REPARENT_NOTIFY:
+			wid = ((xcb_reparent_notify_event_t*)e)->window;
 			break;
-		/* please... handle me ... ;_;
-		case XCB_KEY_PRESS:
-		case XCB_KEY_RELEASE:
+
+		/* Triggers a lot */
+		case XCB_CONFIGURE_NOTIFY:
+			wid = ((xcb_configure_notify_event_t*)e)->window;
+			break;
+
+		case XCB_CONFIGURE_REQUEST:
+			wid = ((xcb_configure_request_event_t*)e)->window;
+			break;
+
+		case XCB_GRAVITY_NOTIFY:
+			wid = ((xcb_gravity_notify_event_t*)e)->window;
+			break;
+
+		case XCB_RESIZE_REQUEST:
+			wid = ((xcb_resize_request_event_t*)e)->window;
+			break;
+
+		/* Triggers a lot */
+		case XCB_PROPERTY_NOTIFY:
+			wid = ((xcb_property_notify_event_t*)e)->window;
+			break;
+
+		case XCB_CIRCULATE_NOTIFY:
+			wid = ((xcb_circulate_notify_event_t*)e)->window;
+			break;
+
+		/* Not handled yet
 		case XCB_KEYMAP_NOTIFY:
-		case XCB_EXPOSE:
 		case XCB_GRAPHICS_EXPOSURE:
 		case XCB_NO_EXPOSURE:
-		case XCB_VISIBILITY_NOTIFY:
-		case XCB_MAP_REQUEST:
-		case XCB_REPARENT_NOTIFY:
-		case XCB_CONFIGURE_NOTIFY:
-		case XCB_CONFIGURE_REQUEST:
-		case XCB_GRAVITY_NOTIFY:
-		case XCB_RESIZE_REQUEST:
-		case XCB_CIRCULATE_NOTIFY:
 		case XCB_CIRCULATE_REQUEST:
-		case XCB_PROPERTY_NOTIFY:
 		case XCB_SELECTION_CLEAR:
 		case XCB_SELECTION_REQUEST:
 		case XCB_SELECTION_NOTIFY:
 		case XCB_COLORMAP_NOTIFY:
 		case XCB_CLIENT_MESSAGE:
-		case XCB_MAPPING_NOTIFY:
-		*/
+		case XCB_MAPPING_NOTIFY: */
+
 		default:
 			return 0x0;
 	}
