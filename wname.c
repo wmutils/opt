@@ -27,7 +27,7 @@ get_title(xcb_window_t win)
 	xcb_get_property_reply_t *r;
 
 	cookie = xcb_get_property(conn, 0, win,
-			XCB_ATOM_WM_NAME, XCB_ATOM_STRING, 0L, 32L);
+			XCB_ATOM_WM_NAME, XCB_ATOM_ANY, 0L, 32L);
 	r = xcb_get_property_reply(conn, cookie, NULL);
 
 	if (r) {
