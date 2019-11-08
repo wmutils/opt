@@ -262,6 +262,7 @@ main (int argc, char **argv)
 				/* FALLTHROUGH */
 		}
 		print_event(e);
+		fflush(stdout);
 
 		free(e);
 	}
