@@ -164,7 +164,7 @@ print_event(xcb_generic_event_t *e)
 		case XCB_BUTTON_PRESS:
 		case XCB_BUTTON_RELEASE:
 			printf("%s\t0x%08x %d\n", evname[e->response_type],
-				((xcb_button_press_event_t*)e)->child,
+				((xcb_button_press_event_t*)e)->event,
 				((xcb_button_press_event_t*)e)->detail);
 			break;
 
