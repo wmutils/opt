@@ -41,6 +41,12 @@ static uint32_t mask = XCB_EVENT_MASK_NO_EVENT
                      /* | XCB_EVENT_MASK_COLOR_MAP_CHANGE */
                      /* | XCB_EVENT_MASK_OWNER_GRAB_BUTTON */
                      ;
+static uint32_t rootmask = XCB_EVENT_MASK_NO_EVENT
+                         | XCB_EVENT_MASK_STRUCTURE_NOTIFY
+                         | XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY
+                         | XCB_EVENT_MASK_BUTTON_PRESS
+                         | XCB_EVENT_MASK_BUTTON_RELEASE
+                         ;
 
 static const char *evname[] = {
         [0]                     = "EVENT_ERROR",
@@ -80,7 +86,7 @@ static const char *evname[] = {
 void
 usage(char *name)
 {
-	fprintf(stderr, "usage: %s [-l] [-m <mask>]\n", name);
+	fprintf(stderr, "usage: %s [-l] [-rm <mask>]\n", name);
 	exit(1);
 }
 
@@ -223,6 +229,9 @@ main (int argc, char **argv)
 		case 'l':
 			list_events();
 			exit(0);
+		case 'r':
+			  rootmask = strtoul(EARGF(usage(argv0)), NULL, 10);
+			  break;
 		case 'm':
 			  mask = strtoul(EARGF(usage(argv0)), NULL, 10);
 			  break;
@@ -236,15 +245,7 @@ main (int argc, char **argv)
 	 * We need to get notifed of window creations, no matter what, because
 	 * we need to register the event mask on all newly created windows
 	 */
-	register_events(scr->root, XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY);
-
-	if (mask & XCB_EVENT_MASK_BUTTON_PRESS) {
-		xcb_grab_button(conn, 0, scr->root,
-		                XCB_EVENT_MASK_BUTTON_PRESS |
-		                XCB_EVENT_MASK_BUTTON_RELEASE,
-		                XCB_GRAB_MODE_ASYNC, XCB_GRAB_MODE_ASYNC,
-		                scr->root, XCB_NONE, 1, XCB_NONE);
-	}
+	register_events(scr->root, rootmask);
 
 	/* register the events on all mapped windows */
 	wn = get_windows(conn, scr->root, &wc);
