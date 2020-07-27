@@ -83,7 +83,7 @@ int is; /* inner size  */
 	};
 
 	xcb_pixmap_t pmap = xcb_generate_id(conn);
-	xcb_create_pixmap(conn, scr->root_depth, pmap, win,
+	xcb_create_pixmap(conn, geom->depth, pmap, win,
 			geom->width  + (b*2),
 			geom->height + (b*2));
 	xcb_gcontext_t gc = xcb_generate_id(conn);
