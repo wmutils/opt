@@ -25,7 +25,6 @@
 
 char *argv0;
 static xcb_connection_t *conn;
-static xcb_screen_t *scr;
 
 static void usage       (char *name);
 static void set2border  (xcb_window_t, int, int, int, int);
@@ -132,7 +131,6 @@ main (int argc, char **argv)
 	} ARGEND
 
 	init_xcb(&conn);
-	get_screen(conn, &scr);
 
 	/* assume remaining arguments are windows */
 	while (*argv)
