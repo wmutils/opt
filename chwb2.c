@@ -59,6 +59,11 @@ int is; /* inner size  */
 	if (is + os > geom->border_width)
 		warnx("warning: pixmap is greater than border size");
 
+	oc |= 0xff << 24;
+	os |= 0xff << 24;
+	ic |= 0xff << 24;
+	is |= 0xff << 24;
+
 	w = (short)geom->width;
 	h = (short)geom->height;
 	b = (unsigned short)is+os;
