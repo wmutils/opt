@@ -12,6 +12,7 @@ utilities
 
 opt has less utilities than core, here is a little overview:
 
+* chwb3 - control an inner window border and two outer window borders
 * chwb2 - control two different window borders
 * wew   - print window events
 * wname - print a window's name

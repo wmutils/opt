@@ -25,9 +25,10 @@
 
 char *argv0;
 static xcb_connection_t *conn;
+static xcb_screen_t *scr;
 
 static void usage       (char *name);
-static void set2border  (xcb_window_t, int, int, int, int);
+static void set3border  (xcb_window_t, int, int, int, int);
 
 static void
 usage (char *name)
@@ -37,7 +38,7 @@ usage (char *name)
 }
 
 static void
-set2border (win, oc, os, ic, is)
+set3border (win, oc, os, ic, is)
 xcb_window_t win;
 int oc; /* outer color */
 int os; /* outer size  */
@@ -48,7 +49,7 @@ int is; /* inner size  */
 		return;
 
 	uint32_t values[1];
-	short w, h, b, o;
+	short w, h, b, o, i;
 
 	xcb_get_geometry_reply_t *geom = xcb_get_geometry_reply(conn,
 			xcb_get_geometry(conn, win), NULL);
@@ -56,34 +57,32 @@ int is; /* inner size  */
 	if (geom == NULL)
 		return;
 
-	if (is + os > geom->border_width)
+	if ((is + (os*2)) > geom->border_width)
 		warnx("warning: pixmap is greater than border size");
-
-	oc |= 0xff << 24;
-	os |= 0xff << 24;
-	ic |= 0xff << 24;
-	is |= 0xff << 24;
 
 	w = (short)geom->width;
 	h = (short)geom->height;
-	b = (unsigned short)is+os;
+	b = (unsigned short)is+(os*2);
 	o = (unsigned short)os;
+        i = (unsigned short)is;
 
 	xcb_rectangle_t inner[] = {
-		/* you're not supposed to understand this. */
-		{     w,0,b-o     ,h+b-   o      },
-		{     w+b   +o,  0,   b  -o,     h+         b  -  o},
-		{     0,h   ,w+b  -o,b-   o      },
-		{     0,h   +b+      o,   w+     b-         o, b -o},
-		{     w+b+o,b        +h    +o,b,b}
+            {w+os, 0, i, h+o+i},
+            {0, h+os, w+o, i},
+            {w+b+os, 0, i, h+o},
+            {0, h+b+os, w+o, i},
+            {w+b+os, h+b+os, i, o+i},
+            {w+b+os, h+b+os, o+i, i},
+            {w+os, h+b+os, i, o+i},
+            {w+b+os, h+os, o+i, i}
 	};
 
 	xcb_rectangle_t outer[] = {
-		{0, 0, w+(b*2), h+(b*2)}
+                {0, 0, w+(b*2), h+(b*2)}
 	};
 
 	xcb_pixmap_t pmap = xcb_generate_id(conn);
-	xcb_create_pixmap(conn, geom->depth, pmap, win,
+	xcb_create_pixmap(conn, scr->root_depth, pmap, win,
 			geom->width  + (b*2),
 			geom->height + (b*2));
 	xcb_gcontext_t gc = xcb_generate_id(conn);
@@ -95,7 +94,7 @@ int is; /* inner size  */
 
 	values[0] = ic;
 	xcb_change_gc(conn, gc, XCB_GC_FOREGROUND, values);
-	xcb_poly_fill_rectangle(conn, pmap, gc, 5, inner);
+	xcb_poly_fill_rectangle(conn, pmap, gc, 8, inner);
 
 	values[0] = pmap;
 	xcb_change_window_attributes(conn, win, XCB_CW_BORDER_PIXMAP, values);
@@ -132,10 +131,11 @@ main (int argc, char **argv)
 	} ARGEND
 
 	init_xcb(&conn);
+	get_screen(conn, &scr);
 
 	/* assume remaining arguments are windows */
 	while (*argv)
-		set2border(strtoul(*argv++, NULL, 16), oc, os, ic, is);
+		set3border(strtoul(*argv++, NULL, 16), oc, os, ic, is);
 
 	xcb_aux_sync(conn);
 
